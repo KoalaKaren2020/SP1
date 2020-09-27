@@ -16,7 +16,7 @@ import java.util.Random;
 
 Game game = new Game(30, 20, 5, 5);
 PFont font;
-  
+
 
 
 
@@ -31,18 +31,16 @@ void setup()
   textFont(font, 16);
   minim = new Minim(this);
   song = minim.loadFile("sample.mp3");
-  
-  
 }
 
 void keyReleased()
 {
-  game.onKeyReleased(key);
+  game.onKeyReleased(key, keyCode);
 }
 
 void keyPressed()
 {
-  game.onKeyPressed(key);
+  game.onKeyPressed(key, keyCode);
 }
 
 void draw()
@@ -58,34 +56,33 @@ void draw()
   {
     for (int x = 0; x < game.getWidth(); x++)
     {
-      if(board[x][y] == 0)
+      if (board[x][y] == 0)
       {
-        fill(0,0,0);
-      }
-      else if(board[x][y] == 1)
+        fill(0, 0, 0);
+      } else if (board[x][y] == 1)
       {
-        fill(0,0,255);
-      }
-      else if(board[x][y] == 2)
+        fill(0, 0, 255);
+      } else if (board[x][y] == 2)
       {
-        fill(255,0,0);
-      }
-      else if(board[x][y] == 3)
+        fill(255, 0, 0);
+      } else if (board[x][y] == 3)
       {
-        fill(0,255,0);
+        fill(0, 255, 0);
+      } else if (board[x][y] == 4)
+      {
+        fill(255, 0, 255);
       }
-      stroke(100,100,100);
+      stroke(100, 100, 100);
       rect(x*40, y*40, 40, 40);
     }
   }
   fill(255);
-  text("Lifes: "+game.getPlayerLife(), 25,25);
-  text("Points: "+game.getPlayerFood(), 25,40);
+  text("Player 1 Life: "+game.getPlayerLife(), 25, 25);
+  text("Player 1 Points: "+game.getPlayerFood(), 25, 40);
+  text("Player 2 Life: " +game.getPlayer2Life(), width-150, 25);
+  text("Player 2 Points: "+game.getPlayerFood(), width-150, 40);
 }
 
-void mousePressed(){
+void mousePressed() {
   song.loop();
-  }
- 
-
-  
+}

@@ -4,68 +4,127 @@ class Keys
   private boolean aDown = false;
   private boolean sDown = false;
   private boolean dDown = false;
-  
-  public Keys(){}
-  
+  private boolean upDown = false;
+  private boolean leftDown = false;
+  private boolean downDown = false;
+  private boolean rightDown = false;
+
+
+
+  public Keys() {
+  }
+
   public boolean wDown()
   {
     return wDown;
   }
-  
+
   public boolean aDown()
   {
     return aDown;
   }
-  
+
   public boolean sDown()
   {
     return sDown;
   }
-  
+
   public boolean dDown()
   {
     return dDown;
   }
-  
-  
-  
-  void onKeyPressed(char ch)
+  public boolean upDown()
   {
-    if(ch == 'W' || ch == 'w')
+    return upDown;
+  }
+
+  public boolean leftDown()
+  {
+    return leftDown;
+  }
+
+  public boolean downDown()
+  {
+    return downDown;
+  }
+
+  public boolean rightDown()
+  {
+    return rightDown;
+  }
+
+
+
+  void onKeyPressed(char ch, int code)
+  {
+    if (ch == 'W' || ch == 'w')
     {
       wDown = true;
     }
-    else if (ch == 'A' || ch == 'a')
+    if (ch == 'A' || ch == 'a')
     {
       aDown = true;
     }
-    else if(ch == 'S' || ch == 's')
+    if (ch == 'S' || ch == 's')
     {
       sDown = true;
     }
-    else if(ch == 'D' || ch == 'd')
+    if (ch == 'D' || ch == 'd')
     {
       dDown = true;
     }
+    if (code == UP)
+    {
+       upDown =true;
+    }
+    
+    if (code == LEFT)
+    {
+      leftDown = true;
+    }
+    if (code == DOWN)
+    {
+      downDown = true;
+    }
+    if (code == RIGHT)
+    {
+      rightDown = true;
+    }
   }
-  
-  void onKeyReleased(char ch)
+
+  void onKeyReleased(char ch, int code)
   {
-    if(ch == 'W' || ch == 'w')
+    if (ch == 'W' || ch == 'w')
     {
       wDown = false;
     }
-    else if (ch == 'A' || ch == 'a')
+    if (ch == 'A' || ch == 'a')
     {
       aDown = false;
     }
-    else if(ch == 'S' || ch == 's')
+    if (ch == 'S' || ch == 's')
     {
       sDown = false;
     }
-    else if(ch == 'D' || ch == 'd')
+    if (ch == 'D' || ch == 'd')
     {
       dDown = false;
+    }
+    if (code == UP)
+    {
+      upDown = false;
+    }
+    if (code == LEFT)
+    {
+      leftDown = false;
+    }
+    if (code == DOWN)
+    {
+      downDown = false;
+    }
+    if (code == RIGHT)
+    {
+      rightDown = false;
     }
   }
 }
