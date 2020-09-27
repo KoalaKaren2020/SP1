@@ -8,11 +8,12 @@ class Game
   private int[][] board;
   private Keys keys;
   private int playerLife;
+  private int playerFood;
   private Dot player;
   private Dot[] enemies;
-  
+  private Dot[] food;
    
-  Game(int width, int height, int numberOfEnemies)
+  Game(int width, int height, int numberOfEnemies, int numberOfFood)
   {
     if(width < 10 || height < 10)
     {
@@ -29,6 +30,18 @@ class Game
     keys = new Keys();
     player = new Dot(0,0,width-1, height-1);
     enemies = new Dot[numberOfEnemies];
+    food = new Dot[numberOfFood];
+    for(int i = 0; i < numberOfFood; ++i)
+    {
+      //random int and random food spawn
+      int startX = int(random(width-1));
+      int startY = int(random(height-1));
+     food[i] = new Dot(startX, startY, width-1, height-1); 
+    }
+      this.playerFood = 0;
+      
+    
+    
     for(int i = 0; i < numberOfEnemies; ++i)
     {
       enemies[i] = new Dot(width-1, height-1, width-1, height-1);
@@ -49,6 +62,15 @@ class Game
   public int getPlayerLife()
   {
     return playerLife;
+    
+  
+  }
+  
+  public int getPlayerFood()
+  
+  {
+   return playerFood; 
+   
   }
   
   public void onKeyPressed(char ch)
@@ -65,6 +87,7 @@ class Game
   {
     updatePlayer();
     updateEnemies();
+    updateFood();
     checkForCollisions();
     clearBoard();
     populateBoard();
@@ -181,6 +204,10 @@ class Game
     {
       board[enemies[i].getX()][enemies[i].getY()] = 2;
     }
+    for(int i = 0; i < food.length; ++i)
+    {
+     board[food[i].getX()][food[i].getY()] = 3; 
+    }
   }
    
   private void checkForCollisions()
@@ -192,6 +219,81 @@ class Game
       {
         //We have a collision
         --playerLife;
+      }
+    }
+    //check food collisions
+    for(int i = 0; i < food.length; ++i)
+    {
+      if(food[i].getX() == player.getX() && food[i].getY() == player.getY())
+      {
+        //We have a collision
+        ++playerFood;
+        food[i].setRandomPosition();
+      }
+    }
+
+  }
+   
+
+
+ private void updateFood()
+  {
+    for(int i = 0; i < food.length; ++i)
+    {
+      //Should we follow or move randomly?
+      //2 out of 3 we will follow..
+      if(rnd.nextInt(3) < 2)
+      {
+        //We follow
+        int dx = food[i].getX() - player.getX();
+        int dy = food[i].getY() - player.getY();
+        if(abs(dx) > abs(dy))
+        {
+          if(dx > 0)
+          {
+            //Player is to the right
+            food[i].moveRight();
+          }
+          else
+          {
+            //Player is to the left
+            food[i].moveLeft();
+          }
+        }
+        else if(dy > 0)
+        {
+          //Player is down;
+          food[i].moveDown();
+        }
+        else
+        {//Player is up;
+          food[i].moveUp();
+        }
+      }
+      else
+      {
+        //We move randomly
+        int move = rnd.nextInt(4);
+        if(move == 0)
+        {
+          //Move right
+          enemies[i].moveRight();
+        }
+        else if(move == 1)
+        {
+          //Move left
+          enemies[i].moveLeft();
+        }
+        else if(move == 2)
+        {
+          //Move up
+          food[i].moveUp();
+        }
+        else if(move == 3)
+        {
+          //Move down
+          food[i].moveDown();
+        }
       }
     }
   }

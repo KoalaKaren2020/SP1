@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 
-Game game = new Game(30, 20, 5);
+Game game = new Game(30, 20, 5, 5);
 PFont font;
   
 
@@ -31,6 +31,7 @@ void setup()
   textFont(font, 16);
   minim = new Minim(this);
   song = minim.loadFile("sample.mp3");
+  
   
 }
 
@@ -79,13 +80,12 @@ void draw()
   }
   fill(255);
   text("Lifes: "+game.getPlayerLife(), 25,25);
+  text("Points: "+game.getPlayerFood(), 25,40);
 }
 
 void mousePressed(){
-  song.play();
+  song.loop();
   }
  
-void mouseReleased() {
-  song.pause();
-}
+
   
