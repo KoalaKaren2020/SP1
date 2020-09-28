@@ -15,6 +15,9 @@ class Game
   private Dot player2;
   private Dot[] enemies;
   private Dot[] food;
+  private boolean gameIsOver = false;
+  private int foodLimit = 20;
+  private String winnerName;
 
 
   Game(int width, int height, int numberOfEnemies, int numberOfFood)
@@ -36,7 +39,7 @@ class Game
     player2 = new Dot(0, 10, width-1, height-1);
     enemies = new Dot[numberOfEnemies];
     food = new Dot[numberOfFood];
-    
+
     for (int i = 0; i < numberOfFood; ++i)
     {
       //random int and random food spawn
@@ -44,7 +47,7 @@ class Game
       int startY = int(random(height-1));
       food[i] = new Dot(startX, startY, width-1, height-1);
     }
-    
+
     this.playerFood = 0;
     this.player2Food = 0;
 
@@ -88,6 +91,15 @@ class Game
   {
     return player2Food;
   }
+  
+  public String getWinnerName()
+  {
+     return winnerName; 
+  }
+  
+  public boolean getGameIsOver(){
+   return gameIsOver; 
+  }
 
   public void onKeyPressed(char ch, int code)
   {
@@ -101,13 +113,17 @@ class Game
 
   public void update()
   {
-    updatePlayer();
-    updatePlayer2();
-    updateEnemies();
-    updateFood();
-    checkForCollisions();
-    clearBoard();
-    populateBoard();
+    if (!gameIsOver) {
+      updatePlayer();
+      updatePlayer2();
+      updateEnemies();
+      updateFood();
+      checkForCollisions();
+      clearBoard();
+      populateBoard();
+    } else { // Game is over
+      clearBoard();
+    }
   }
 
 
@@ -280,12 +296,21 @@ class Game
       if (enemies[i].getX() == player.getX() && enemies[i].getY() == player.getY())
       {
         //We have a collision
-        --playerLife;
+        // Reduce playerLife by 1, and check if it is equals to 0
+        if (--playerLife == 0) {
+          gameIsOver = true;
+          winnerName = "Player 2";
+        }
       }
       if (enemies[i].getX() == player2.getX() && enemies[i].getY() == player2.getY())
       {
         //We have a Collision player 2
-        --player2Life;
+
+        // Reduce playerLife by 1, and check if it is equals to 0
+        if (--player2Life == 0) {
+          gameIsOver = true;
+          winnerName = "Player 1";
+        }
       }
     }
 
@@ -295,13 +320,24 @@ class Game
       if (food[i].getX() == player.getX() && food[i].getY() == player.getY())
       {
         //We have a collision
-        ++playerFood;
+
+        //Increase playerFood by 1 and see if we hit the score limit
+        if (++playerFood == foodLimit) {
+          gameIsOver = true;
+          winnerName = "Player 1";
+        }
+
         food[i].setRandomPosition();
       }
       if (food[i].getX() == player2.getX() && food[i].getY() == player2.getY())
       {
         //We have a collision player2
-        ++player2Food;
+
+        //Increase player2Food by 1 and see if we hit the score limit
+        if (++player2Food == foodLimit) {
+          gameIsOver = true;
+          winnerName = "Player 2";
+        }
         food[i].setRandomPosition();
       }
     }
